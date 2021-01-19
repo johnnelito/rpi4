@@ -418,8 +418,11 @@ if [ ! -z "$MASQUPDATED" ]; then
 	if [ ! -z "$MASQRUNNING" ]; then
 		[ -n "$MASQDEBUG" ] && echo "/etc/init.d/dnsmasq restart"
 		#sleep 3
-		/etc/init.d/dnsmasq restart 1>/dev/null 2>/dev/null
-		/etc/init.d/dnsmasq restart 1>/dev/null 2>/dev/null
+		#/etc/init.d/dnsmasq restart 1>/dev/null 2>/dev/null
+		/etc/init.d/dnsmasq stop 1>/dev/null 2>/dev/null
+		sleep 3
+		/etc/init.d/dnsmasq start 1>/dev/null 2>/dev/null
+		#/etc/init.d/dnsmasq restart 1>/dev/null 2>/dev/null
 	fi
 	return 0
 fi
@@ -434,12 +437,7 @@ return 1
 
 
 
-
 #MASQDEBUG=1
-
-
-
-
 
 
 
