@@ -34,8 +34,6 @@ fi
 #if [ -z "$MASQvariant" ]; then MASQmsg="$MASQmsg dnsmasq is not installed"
 
 
-
-
 if [ -n "$MASQDEBUG" ]; then #if [ -n "$MASQDEBUG" ] && [ ! -z "$MASQvariant" ]; then
 	#echo "opkg update 1>/dev/null 2>/dev/null" #opkg update
 	if ! opkg update 1>/dev/null 2>/dev/null; then
@@ -91,11 +89,13 @@ while [ ! -z "$(mount | grep feeds | cut -d' ' -f3)" ]; do
 done; rm /tmp/distfeeds.conf 2>/dev/null; rm /tmp/customfeeds.conf 2>/dev/null
 
 
+
 if [ ! -z "$MASQUPDATED" ]; then
 	#logger -t vulfix "dnsmasq patched: $MASQvariant $MASQmsg"
-	LOGMSG "dnsmasq patched: $MASQvariant $MASQmsg"
+	LOGMSG "dnsmasq patched: $MASQvariant $MASQmsg $VERFOUND"
 	if [ ! -z "$MASQRUNNING" ]; then
-		[ -n "$MASQDEBUG" ] && echo "/etc/init.d/dnsmasq restart"
+		#[ -n "$MASQDEBUG" ] && echo "/etc/init.d/dnsmasq restart"
+		LOGMSG "dnsmasq restart"
 		/etc/init.d/dnsmasq stop 1>/dev/null 2>/dev/null
 		sleep 3
 		/etc/init.d/dnsmasq start 1>/dev/null 2>/dev/null
@@ -116,14 +116,9 @@ return 1
 
 #MASQDEBUG=1
 
-
-
 LOGMSG() {
-
-
 	logger -t vulfix "${1}"
 	echo "${1}"
-
 }
 
 
@@ -190,39 +185,7 @@ fi #end -z ver or variant
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#curl -sSL https://raw.githubusercontent.com/wulfy23/rpi4/master/utilities/dnsmasqfix.sh > /tmp/dnsmasqfix.sh; chmod +x /tmp/dnsmasqfix.sh; /tmp/dnsmasqfix.sh
 
 
 
