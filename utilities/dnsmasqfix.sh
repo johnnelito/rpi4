@@ -21,13 +21,14 @@ mount -o bind /tmp/customfeeds.conf /etc/opkg/customfeeds.conf
 #MASQDEBUG=1
 #MASQvariant=
 
-
 if [ -n "$MASQDEBUG" ] && [ -z "$MASQvariant" ]; then
 	MASQmsg="$MASQmsg dnsmasq is not installed"
 	NOVARIANT=1
 elif [ -n "$MASQDEBUG" ]; then
-	echo "Checking for newer version for $MASQvariant $MASQver $onsysVERSION"
+	#echo "Checking for newer version for $MASQvariant $MASQver $onsysVERSION"
+	LOGMSG "Checking for newer version for $MASQvariant $MASQver $onsysVERSION"
 fi
+
 
 
 #if [ -z "$MASQvariant" ]; then MASQmsg="$MASQmsg dnsmasq is not installed"
@@ -59,29 +60,23 @@ if [ -z "$OPKGUPDfail" ] && [ -z "$NOVARIANT" ] && opkg list-upgradable | \
 
 	[ -n "$MASQDEBUG" ] && echo "VERFOUND: $(opkg list-upgradable | grep 'dnsmasq')"
 
-
 	if [ ! -z "$(pidof dnsmasq)" ]; then MASQRUNNING=1 ; fi
 
 
 	[ -n "$MASQDEBUG" ] && echo "opkg upgrade $MASQvariant"
 
 	if [ -n "$MASQDEBUG" ]; then
-
 		if opkg upgrade $MASQvariant; then
 			MASQUPDATED=1
-
 		else
 			MASQmsg="${MASQmsg} opkgupgradecmdfailed"
 		fi
-	
 	else
 		if opkg upgrade $MASQvariant 1>/dev/null 2>/dev/null; then
 			MASQUPDATED=1
-
 		else
 			MASQmsg="${MASQmsg} opkgupgradecmdfailed"
 		fi
-	
 	fi
 
 
@@ -97,7 +92,8 @@ done; rm /tmp/distfeeds.conf 2>/dev/null; rm /tmp/customfeeds.conf 2>/dev/null
 
 
 if [ ! -z "$MASQUPDATED" ]; then
-	logger -t vulfix "dnsmasq patched: $MASQvariant $MASQmsg"
+	#logger -t vulfix "dnsmasq patched: $MASQvariant $MASQmsg"
+	LOGMSG "dnsmasq patched: $MASQvariant $MASQmsg"
 	if [ ! -z "$MASQRUNNING" ]; then
 		[ -n "$MASQDEBUG" ] && echo "/etc/init.d/dnsmasq restart"
 		/etc/init.d/dnsmasq stop 1>/dev/null 2>/dev/null
@@ -108,7 +104,8 @@ if [ ! -z "$MASQUPDATED" ]; then
 fi
 
 
-logger -t vulfix "dnsmasq patch failed: $MASQvariant $MASQmsg"
+#logger -t vulfix "dnsmasq patch failed: $MASQvariant $MASQmsg"
+LOGMSG "dnsmasq patch failed: $MASQvariant $MASQmsg"
 return 1
 
 }
@@ -118,6 +115,22 @@ return 1
 
 
 #MASQDEBUG=1
+
+
+
+LOGMSG() {
+
+
+	logger -t vulfix "${1}"
+	echo "${1}"
+
+}
+
+
+
+
+
+
 
 
 
@@ -132,8 +145,9 @@ onsysVERSION=$(cat /etc/custom/buildinfo.txt | grep '^localversion' | cut -d'=' 
 
 
 if [ -z "$MASQver" ] || [ -z "$MASQvariant" ]; then #DBG MASQvariant=
-	logger -t vulfix "masq update due to known vulnerabilities: $MASQvariant $MASQver [not-installed]"
+	LOGMSG "masq update due to known vulnerabilities: $MASQvariant $MASQver [not-installed]"
 else
+
 
 case "$onsysVERSION" in #"2.3"*|"2.5"*)
 	"2.5"*) touch /root/.dnsmasq.patched; ;; #next build should not have issue
@@ -148,16 +162,19 @@ case "$onsysVERSION" in #"2.3"*|"2.5"*)
 			fi
 			;;
 			"2.83"*)
-				logger -t vulfix "masq version is ok: $MASQvariant $MASQmsg"
+				#logger -t vulfix "masq version is ok: $MASQvariant $MASQmsg $MASQver"
+				LOGMSG "masq version is ok: $MASQvariant $MASQmsg $MASQver"
 				touch /root/.dnsmasq.patched
 			;;
 			esac
 		;;
 
 	*)
-		logger -t vulfix "your build is ancient update due to known vulnerabilities: $MASQvariant $MASQmsg"
+		#logger -t vulfix "your build is ancient update due to known vulnerabilities: $MASQvariant $MASQmsg"
+		LOGMSG "your build is ancient update due to known vulnerabilities: $MASQvariant $MASQmsg $MASQver"
 	;;
 esac
+
 
 
 
