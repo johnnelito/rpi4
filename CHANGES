@@ -1,9 +1,17 @@
 
 
     ___________________________________________________   CHANGELOG
-    
+   
+
+     -r15549+    -*dnsmasq vulnfix@2.83-1
+                 -removed KMOD leds trigger default + 2 more now
+                  built-in
+                 -add ctinfo_rpi.qos testing_v2+ini options
+
+
      2.3.757-15+ -DISABLEDSERVICES="" (mostly for wpad)
-                 -add fsck via cmdline.txt option
+                 -add fsck via cmdline.txt option 'fsckparts'
+                 -some sysinfo.sh and fboot .msgs tweaks
                  -print UUID on flash et. al. verb
 
      2.3.757-9   -71-banner alt banners
@@ -12,7 +20,7 @@
      2.3.757-7  -add imageinspect + statix community image signature 
                 -fix sbin/sysupgrade help text differentiate community options
                 -add / update sysupgrade-clean-backup aka tar.gz modder
-                -also add custom backup dump script was zzz.sh -> sysupgrade-userbackup.sh -> sysupgrade-clean... raw
+                -also add custom backup dump script was sysupgrade-clean-backup.sh
                 -*r1546x+ official adds chan-analysis 
                 -addpkg wifischedule test
                 -!!! add ucert-full !!! TESTING-mods@fwtool.sh+terminator.sh+FKEY ib.sh unused

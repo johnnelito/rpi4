@@ -4,7 +4,7 @@
 
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     IMPORTANT: build users running pre r15530 releases are advised to update
-    ( or check your dnsmasq version is above 2.82 )
+    ( or check your dnsmasq version is above 2.82 - updatecheck should fix on 2.3.x on login )
     https://forum.openwrt.org/t/security-advisory-2021-01-19-1-dnsmasq-multiple-vulnerabilities/85903
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
